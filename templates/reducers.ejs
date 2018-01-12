@@ -1,15 +1,28 @@
 import { Action, AnyAction, Reducer } from "redux";
 import * as SI from "seamless-immutable";
-import { createAction, PayloadAction } from "ts-redux-actions";
+import { createAction, PayloadAction } from "typesafe-actions";
 import { mapReducers, ReducerMap } from "../../Lib/ReduxHelpers";
 
 /* ------------- Types and Action Creators ------------- */
+
+export enum <%= pascalCase(props.name) %>ActionTypes {
+  <%= snakeCase(props.name).toUpperCase() %>_REQUEST = "<%= pascalCase(props.name) %>Request",
+  <%= snakeCase(props.name).toUpperCase() %>_SUCCESS = "<%= pascalCase(props.name) %>Success",
+  <%= snakeCase(props.name).toUpperCase() %>_FAILURE = "<%= pascalCase(props.name) %>Failure",
+}
+
 interface <%= pascalCase(props.name) %>SuccessParams {status: boolean}
 
 const actionCreators = {
-  request: createAction("<%= snakeCase(props.name).toUpperCase() %>_REQUEST"),
-  success: (payload: <%= pascalCase(props.name) %>SuccessParams)  => ({type: "<%= snakeCase(props.name).toUpperCase() %>_SUCCESS", payload})),
-  failure: createAction("<%= snakeCase(props.name).toUpperCase() %>_FAILURE"),
+  request: createAction(<%= pascalCase(props.name) %>ActionTypes.<%= snakeCase(props.name).toUpperCase() %>_REQUEST),
+  success: createAction(<%= pascalCase(props.name) %>ActionTypes.<%= snakeCase(props.name).toUpperCase() %>_SUCCESS, 
+    (payload: <%= pascalCase(props.name) %>SuccessParams)  =>
+      ({
+        type: <%= pascalCase(props.name) %>ActionTypes.<%= snakeCase(props.name).toUpperCase() %>_SUCCESS,
+        payload
+      })
+  ),
+  failure: createAction(<%= pascalCase(props.name) %>ActionTypes.<%= snakeCase(props.name).toUpperCase() %>_FAILURE),
 });
 
 export const <%= pascalCase(props.name) %>Actions = actionCreators;
