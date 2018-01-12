@@ -1,17 +1,24 @@
 import { Action, AnyAction, Reducer } from "redux";
 import * as SI from "seamless-immutable";
-import { createAction, PayloadAction } from "ts-redux-actions";
+import { createAction, PayloadAction } from "typesafe-actions";
 import { mapReducers, ReducerMap } from "../../Lib/ReduxHelpers";
 
 /* ------------- Types and Action Creators ------------- */
+
+export enum GithubActionTypes {
+  USER_REQUEST = "githubUserRequest",
+  USER_SUCCESS = "githubUserSuccess",
+  USER_FAILURE = "githubUserFailure",
+}
+
 interface RequestParams {username: string; }
 interface SuccessParams {avatar: string; }
 const actions = {
-  userRequest: createAction("githubUserRequest", (params: RequestParams) =>
-    ({type: "githubUserRequest", payload: params})),
-  userSuccess: createAction("githubUserSuccess", (params: SuccessParams) =>
-    ({type: "githubUserSuccess", payload: params})),
-  userFailure: createAction("githubUserFailure"),
+  userRequest: createAction(GithubActionTypes.USER_REQUEST, (params: RequestParams) =>
+    ({type: GithubActionTypes.USER_REQUEST, payload: params})),
+  userSuccess: createAction(GithubActionTypes.USER_SUCCESS, (params: SuccessParams) =>
+    ({type: GithubActionTypes.USER_SUCCESS, payload: params})),
+  userFailure: createAction(GithubActionTypes.USER_FAILURE),
 };
 
 export const GithubActions = actions;
